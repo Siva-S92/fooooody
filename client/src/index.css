@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    @apply bg-slate-900
+}
+section {
+    @apply pt-20
+}
+
+tr{
+    @apply border-b border-collapse border-slate-300 drop-shadow-sm
+}
+td{
+    @apply h-16
+}
+th{
+    @apply h-10
+}
