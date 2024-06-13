@@ -25,7 +25,13 @@ app.use(cors({ origin: "*" }));
 
 //database
 
-//routing
+
+//routing1
+
+app.get("/", async (req, res) => res.send("This is Foooody site's backend"))
+
+
+//routing2
 app.post("/api/create-checkout-session", async (req, res) => {
   const { products } = req.body;
   const lineItems = products.map((product) => ({
