@@ -1,8 +1,18 @@
 const express = require("express");
 const cors = require("cors");
-const stripe = require("stripe")(
-  "sk_test_51OyuooSDWWAfZmz9Mvg8fjGKXw5w6K8Ac0wzGajp7oRo6P51v29dseT3feZr2MXIyNajMIrKqtAcZZ40jQGr7goS00qoJyEjTI"
-);
+const dotenv = require("dotenv");
+
+
+//env configure
+dotenv.config();
+
+//stripe cofig old
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
+//stripe cofig new1
+
+
+
 
 //server setup
 const app = express();
@@ -21,22 +31,46 @@ app.post("/api/create-checkout-session", async (req, res) => {
   const lineItems = products.map((product) => ({
     price_data: {
       currency: "inr",
-      product_data: {
-        name: product.dish,
-      },
+      product_data: {name: product.dish},
       unit_amount: product.price * 100,
     },
     quantity: product.qnty,
   }));
+
+  // const customer = await stripe.customers.create({
+  //   name: "siva s",
+  //   description: "test description",
+  //   email: "sivanandparvathi@gmail.com",
+  //   phone: "9840350329",
+  //   address: {
+  //     line1: "TNHB Apartment,sholinganallur",
+  //     line2: "",
+  //     city: "chennai",
+  //     state: "Tamilnadu",
+  //     postal_code: "600119",
+  //     country: "india",
+  //   },
+  // });
+  // const customerID = customer.id;
+
   const session = await stripe.checkout.sessions.create({
+    //customer: customerID,
     payment_method_types: ["card"],
+    shipping_address_collection: {
+      allowed_countries: ["GB", "US", "CA"]
+    },
     line_items: lineItems,
     mode: "payment",
-    success_url: "http://localhost:5173/success",
-    cancel_url: "http://localhost:5173/cancel",
+    success_url: `${process.env.CLIENT_URL}/success`,
+    cancel_url: `${process.env.CLIENT_URL}/cancel`,
+    
+  },{
+    apiKey: process.env.STRIPE_SECRET_KEY,
   });
   res.json({ id: session.id });
 });
+
+
 
 //server listerning
 app.listen(port, () => {

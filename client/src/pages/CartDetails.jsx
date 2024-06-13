@@ -13,6 +13,7 @@ import {
 } from "../redux/features/cartSlice";
 import { message } from "antd";
 import { loadStripe } from "@stripe/stripe-js";
+import { CLIENT_ID, SERVER_URL } from "../staticdata/constant";
 
 function CartDetails() {
   const [totalprice, setTotalPrice] = useState(0);
@@ -65,9 +66,7 @@ function CartDetails() {
   //payment integration
   const makePayment = async () => {
     try {
-      const stipe = await loadStripe(
-        "pk_test_51OyuooSDWWAfZmz9YVDL0VavmuWuYKjoAT9K5nhV7JmxhE3ezgTn7JdfbvCZIcu9gVAnt8TiderBiIHpCjShA4VC001T2MpBWB"
-      );
+      const stipe = await loadStripe(CLIENT_ID);
       const body = {
         products: cartArray,
       };
@@ -75,7 +74,7 @@ function CartDetails() {
         "Content-Type": "application/json",
       };
       const response = await fetch(
-        "http://localhost:7000/api/create-checkout-session",
+        `${SERVER_URL}/api/create-checkout-session`,
         {
           method: "POST",
           headers: headers,

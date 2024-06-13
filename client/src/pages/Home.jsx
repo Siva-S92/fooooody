@@ -20,7 +20,7 @@ function Home() {
       <Header />
       <section className="relative bg-slate-400/5 px-32">
         <p className="text-2xl text-slate-400 font-semibold text-center pb-2">
-          These Food is delivered to all over the India
+          These food is delivered to  your home
         </p>
         <div className="w-full flex flex-col md:flex-row md:flex-wrap justify-center items-center gap-10 pb-10">
           {card_data &&
